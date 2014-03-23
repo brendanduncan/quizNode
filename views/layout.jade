@@ -1,0 +1,11 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		- if (typeof(scripts) !== 'undefined')
+			- each script in scripts 
+				script(type='text/javascript', src= script)
+	body
+		a(href="/") QuizNode home
+		block content

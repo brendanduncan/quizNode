@@ -1,0 +1,7 @@
+extends layout
+
+block content
+	h1= title
+	- each quiz in quizzes
+		p
+			a(href="#") #{quiz.name}
