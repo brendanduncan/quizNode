@@ -16,7 +16,6 @@ function submitQuizController(app) {
 					console.error(err);
 				}
 			});
-			console.log('here');
 			res.render('edit_quiz', {
 				'title': 'Submit quiz',
 				'quizId': quiz._id,

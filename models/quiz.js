@@ -7,10 +7,10 @@ var QuestionSchema =
 			number: Number,
 			
 			// array of strings
-			answers: Array,
+			answers: [String],
 			
 			// parallel array to answers, of booleans
-			correctAnswers: Array,
+			correctAnswers: [Boolean],
 			
 			// whether or not user can select multiple
 			// answers
@@ -21,10 +21,7 @@ var QuizSchema =
 		new Schema({
         	name: String,
         	desc: String,
-			questions: [{
-				type: mongoose.Schema.Types.ObjectId,
-			    ref: QuestionSchema
-			}]
+			questions: [QuestionSchema]
 	  	});
 		
 // how too add methods:
