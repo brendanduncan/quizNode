@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	h1 Create quiz
+	p Name: 
+		= name
+	p Desc: 
+		= desc
+	p(hidden type="text", name="quizId") =quizId
+	div
+		| Questions:
+				
+		- each question, qi in questions
+			p 
+				=question.text

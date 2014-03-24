@@ -1,7 +1,8 @@
 var Quiz = require('../models/quiz').Quiz;
 
 function submitQuizController(app) {
-	app.post('/submitQuiz', function(req, res) {
+	// user edits quiz after submision from createQuiz
+	app.post('/editQuiz', function(req, res) {
 		// name empty, render form again
 		if(typeof req.body.name === 'undefined' || !req.body.name.trim()) {
 			res.render('create_quiz', { 'title': 'Create quiz', 'error': true });
@@ -15,12 +16,20 @@ function submitQuizController(app) {
 					console.error(err);
 				}
 			});
-			res.render('submit_quiz', {
+			console.log('here');
+			res.render('edit_quiz', {
 				'title': 'Submit quiz',
+				'quizId': quiz._id,
 				'name': quizName,
-				'desc': req.body.desc
+				'desc': req.body.desc,
+				'existingQuestions': []
 			});
 		}
+	});
+	// user edits quiz
+	app.get('/editQuiz', function(req, res) {
+		// TODO - user simply editing quiz
+		// query string is expected
 	});
 }
 

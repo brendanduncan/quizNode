@@ -4,7 +4,7 @@ block content
 	h1 Create a quiz
 	-if (typeof(error) !== 'undefined' && error)
 		p(style="color: red") Error! Quiz name can't be empty!
-	form(action='/submitQuiz',method='post')
+	form(action='/editQuiz',method='post')
 		p Quiz name: 
 		input(type="text", name="name")
 		p Quiz description:
