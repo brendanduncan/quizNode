@@ -13,13 +13,13 @@ block content
 			div(id="#{question#{qi}_form}", class="questionForm")
 				| Question #{qi+1} description:
 				br
-				textarea(name="questionName#{qi}", rows="20" cols="40", value="#{question.text}")
+				textarea(name="questionName#{qi}", rows="5" cols="40") #{question.text}
 			
 		- for (var i = 0; i < 3; ++i) {
 			div(id="#{question#{i+existingQuestions.length}_form}", class="questionForm")
 				| Question #{i+existingQuestions.length+1} description:
 				br
-				textarea(name="questionName#{i+existingQuestions.length}", rows="20" cols="40")
+				textarea(name="questionName#{i+existingQuestions.length}", rows="5" cols="40")
 		- }
 		
 		input(type="submit", value="submit")

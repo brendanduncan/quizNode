@@ -27,8 +27,22 @@ function submitQuizController(app) {
 	});
 	// user edits quiz
 	app.get('/editQuiz', function(req, res) {
-		// TODO - user simply editing quiz
-		// query string is expected
+		var quizId = req.query.quiz;
+		Quiz.findById(quizId, function(err, quiz) {
+			if(err || quiz == null) {
+				if(err) console.error(err);
+				res.send("Error 404: quiz doesn't exist");
+				return;
+			}
+			console.log('questions ' + quiz.questions);
+			res.render('edit_quiz', {
+				'title': 'Submit quiz',
+				'quizId': quiz._id,
+				'name': quiz.name,
+				'desc': quiz.desc,
+				'existingQuestions': quiz.questions
+			});
+		});
 	});
 }
 

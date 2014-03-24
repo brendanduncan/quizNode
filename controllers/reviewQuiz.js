@@ -11,7 +11,6 @@ function reviewQuizController(app) {
 				res.send("Error 404: quiz doesn't exist");
 				return;
 			}
-			console.log('questions ' + quiz.questions);
 			res.render('review_quiz', {
 				'title': 'Review quiz',
 				'quizId': quiz._id,

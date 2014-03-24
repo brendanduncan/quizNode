@@ -5,3 +5,5 @@ block content
 	- each quiz in quizzes
 		p
 			a(href="reviewQuiz?quiz=#{quiz._id}") #{quiz.name}
+			| 
+			a(href="editQuiz?quiz=#{quiz._id}") (edit)
