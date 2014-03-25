@@ -21,7 +21,8 @@ function submitQuizController(app) {
 				'quizId': quiz._id,
 				'name': quizName,
 				'desc': req.body.desc,
-				'existingQuestions': []
+				'existingQuestions': [],
+				'extraQuestions': 3
 			});
 		}
 	});
@@ -34,13 +35,13 @@ function submitQuizController(app) {
 				res.send("Error 404: quiz doesn't exist");
 				return;
 			}
-			console.log('questions ' + quiz.questions);
 			res.render('edit_quiz', {
 				'title': 'Submit quiz',
 				'quizId': quiz._id,
 				'name': quiz.name,
 				'desc': quiz.desc,
-				'existingQuestions': quiz.questions
+				'existingQuestions': quiz.questions,
+				'extraQuestions': 0
 			});
 		});
 	});

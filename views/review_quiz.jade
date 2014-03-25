@@ -11,5 +11,23 @@ block content
 		| Questions:
 				
 		- each question, qi in questions
-			p 
-				=question.text
+			div
+				=question.number+1
+				| &#41; 
+				=question.text 
+				|  (use checkboxes is #{question.useCheckboxes})
+				
+				- each answer, ai in question.answers
+					p
+					- var checked = typeof question.correctAnswers[ai] !== 'undefined' && question.correctAnswers[ai] == true
+					if checked
+						| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+						span(style="font-weight:bold")
+							=ai+1
+							| ) 
+							=answer
+					else
+						| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+						=ai+1
+						| ) 
+						=answer

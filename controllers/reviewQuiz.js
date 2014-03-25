@@ -25,29 +25,62 @@ function reviewQuizController(app) {
 	app.post('/reviewQuiz', function(req, res) {
 		Quiz.findById(req.body.quizId, function(err, quiz) {
 			if(err || quiz == null) {
-				if(err) console.error(err);
 				res.send("Error 404: quiz doesn't exist");
 				return;
 			}
 			
+			if(req.body.questionName === 'undefined' || req.body.answer === 'undefined') {
+				res.send("Error 400: Error in submitted form.")
+			}
+			
 			// save questions to quiz
 			var questions = [];
-			for(var i = 0; true; i++) {
-				if('questionName'+i in req.body) {
-					var question = new Question({ 
-						text: req.body['questionName'+i],
-						number: i,
-						
-						// TODO - allow user to specify the following:
-						answers: [],
-						correctAnswers: [],
-						useCheckboxes: false
-					});
-					questions.push(question);
+			
+			// dict mapping question number -> (dict of answer number -> boolean)
+			// tells whether answer is correct for given question
+			var correctAnswersDict = {};
+			
+			// because checkboxes behave differently, body.correct contains
+			// strings "qi-ai", where qi = question index, ai = answer index
+			if(req.body.correct !== 'undefined') {
+				for(var i in req.body.correct) {
+					var qaArray = req.body.correct[i].split("-");
+					if(qaArray.length != 2 || isNaN(qaArray[0]) || isNaN(qaArray[1])) {
+						continue;
+					}
+					var qnum = parseInt(qaArray[0]);
+					var anum = parseInt(qaArray[1]);
+					if(!(qnum in correctAnswersDict)) {
+						correctAnswersDict[qnum] = {};
+					}
+					correctAnswersDict[qnum][anum] = true;
 				}
-				else {
-					break;
+			}
+			
+			// create questions and add to quiz
+			for(var i in req.body.questionName) {
+				var answers = [];
+				var correctAnswers = []
+				var correctCount = 0;
+				if(i in req.body.answer) {
+					for(var j in req.body.answer[i]) {
+						answers.push(req.body.answer[i][j]);
+						if(i in correctAnswersDict && j in correctAnswersDict[i] && correctAnswersDict[i][j]) {
+							correctAnswers.push(true);
+							correctCount++;
+						} else {
+							correctAnswers.push(false);						
+						}
+					}
 				}
+				var question = new Question({ 
+					text: req.body.questionName[i],
+					number: i,
+					answers: answers,
+					correctAnswers: correctAnswers,
+					useCheckboxes: correctCount != 1
+				});
+				questions.push(question);
 			}
 			quiz.questions = questions;
 			quiz.save(function (err) {
