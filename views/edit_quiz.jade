@@ -10,7 +10,7 @@ block content
 		input(hidden type="text", name="quizId", value="#{quizId}")
 				
 		- each question, qi in existingQuestions
-			div(id="questionFrom[#{qi}]", class="questionForm")
+			div(id="questionForm[#{qi}]", class="questionForm")
 				div(style="float:left")
 					| Question #{qi+1} description:
 					br
@@ -31,7 +31,7 @@ block content
 			
 		- for (var i = 0; i < extraQuestions; ++i) {
 			- var qi = existingQuestions.length + i
-			div(id="questionFrom[#{qi}]", class="questionForm")
+			div(id="questionForm[#{qi}]", class="questionForm")
 				div(style="float:left")
 					| Question #{qi+1} description:
 					br

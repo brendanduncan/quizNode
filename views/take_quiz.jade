@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	p Name: 
+		= quiz.name
+	p Desc: 
+		= quiz.desc
+	form(action='/gradeQuiz',method='post')
+		input(hidden type="text", name="quizId", value="#{quiz._id}")
+				
+		- each question, qi in quiz.questions
+			div(id="questionForm[#{qi}]", class="questionForm")
+				div
+					| #{qi+1}) 
+					=question.text
+					| 
+					if question.useCheckboxes
+						| (Choose all that apply)
+					br
+				div
+					-// add extra hidden input to ensure that a choice is sent for
+					-// each index of chosen[]. If this is not done, and no choice
+					-// is made for one question, then the indices of the chosen
+					-// array will not match up.
+					-for(var j = 0; j < question.answers.length; ++j) {
+						| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						if question.useCheckboxes
+							-var type = 'checkbox'
+						else
+							-var type = 'radio'
+						input(type="#{type}", name="chosen[#{qi}]", value="#{j}")
+						|  &nbsp;&nbsp;
+						=j+1
+						| ) 
+						=question.answers[j]
+						br
+					-}
+					if question.useCheckboxes
+						-var type = 'checkbox'
+					else
+						-var type = 'radio'
+					if j == question.answers.length
+						input(type="#{type}", name="chosen[#{qi}]", value="#{question.answers.length}", checked, hidden)
+					else
+			br
+		
+		input(type="submit", value="submit")

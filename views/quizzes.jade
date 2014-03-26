@@ -4,6 +4,8 @@ block content
 	h1= title
 	- each quiz in quizzes
 		p
-			a(href="reviewQuiz?quiz=#{quiz._id}") #{quiz.name}
+			a(href="takeQuiz?quiz=#{quiz._id}") #{quiz.name}
+			| 
+			a(href="reviewQuiz?quiz=#{quiz._id}") (view answers)
 			| 
 			a(href="editQuiz?quiz=#{quiz._id}") (edit)

@@ -78,6 +78,9 @@ function reviewQuizController(app) {
 					number: i,
 					answers: answers,
 					correctAnswers: correctAnswers,
+					
+					// TODO - this is not always correct logic. Let user
+					// specify whether to use checkboxes
 					useCheckboxes: correctCount != 1
 				});
 				questions.push(question);
