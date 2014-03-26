@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	h1 Create quiz
+	p Name: 
+		= quiz.name
+	p Desc: 
+		= quiz.desc
+	p 
+		b
+			Your score is 
+			= quizAttempt.score * 100
+			|%
+	p(hidden type="text", name="quizId") =quizId
+	div
+		| Questions:
+				
+		- each question, qi in quiz.questions
+			-var questionAttempt = quizAttempt.questionAttempts[qi]
+			div
+				=question.number+1
+				| &#41; 
+				=question.text
+				
+				- each answer, ai in question.answers
+					p
+					- var correct = typeof question.correctAnswers[ai] !== 'undefined' && question.correctAnswers[ai] == true
+					- var chosen = typeof questionAttempt.chosenAnswers[ai] !== 'undefined' && questionAttempt.chosenAnswers[ai] == true
+					if correct
+						if chosen
+							- var styleStr = "color:green; font-weight:bold;"
+						else
+							- var styleStr = "color:green;"
+					else
+						if chosen
+							- var styleStr = "color:red; font-weight:bold;"
+						else
+							- var styleStr = ""
+					
+					
+					| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+					span(style="#{styleStr}")
+						=ai+1
+						| ) 
+						=answer
+			br
+			| 

@@ -54,8 +54,6 @@ function scoreQuizAttempt(quiz, questionAttempts) {
 			if(!(i in quiz.questions)) continue;
 			var correctAnswers = quiz.questions[i].correctAnswers;
 			var selectedAnswers = questionAttempts[i].chosenAnswers;
-			console.log(i + ' correct answers  ' + correctAnswers);
-			console.log(i + ' selected answers ' + selectedAnswers);
 			for(var j = 0; j < correctAnswers.length; ++j) {
 				if(correctAnswers[j] != selectedAnswers[j]) {
 					numCorrect--;

@@ -47,8 +47,11 @@ function gradeQuizController(app) {
 				questionAttempts: questionAttempts
 			});
 			
-			// TODO - render to template with detailed results
-			res.send('Score was ' + (score*100) + '%');
+			res.render('grade_quiz', {
+				'title': 'Graded quiz',
+				'quiz': quiz,
+				'quizAttempt': quizAttempt
+			});
 		});
 	});
 }
