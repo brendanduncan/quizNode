@@ -17,7 +17,8 @@ function submitQuizController(app) {
 				}
 			});
 			res.render('edit_quiz', {
-				'title': 'Submit quiz',
+				'title': 'Edit quiz',
+				'scripts': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js','/javascripts/edit_quiz.js'],
 				'quizId': quiz._id,
 				'name': quizName,
 				'desc': req.body.desc,
@@ -36,7 +37,8 @@ function submitQuizController(app) {
 				return;
 			}
 			res.render('edit_quiz', {
-				'title': 'Submit quiz',
+				'title': 'Edit quiz',
+				'scripts': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js','/javascripts/edit_quiz.js'],
 				'quizId': quiz._id,
 				'name': quiz.name,
 				'desc': quiz.desc,

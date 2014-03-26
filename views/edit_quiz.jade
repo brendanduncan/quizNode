@@ -10,41 +10,53 @@ block content
 		input(hidden type="text", name="quizId", value="#{quizId}")
 				
 		- each question, qi in existingQuestions
-			div(id="questionForm[#{qi}]", class="questionForm")
-				div(style="float:left")
-					| Question #{qi+1} description:
-					br
-					textarea(name="questionName[#{qi}]", rows="5" cols="40") #{question.text}
-				div
-					| Answers (check if correct):
-					br
-					-for(var j = 0; j < question.answers.length; ++j) {
-						input(type="text", name="answer[#{qi}][#{j}]", value="#{question.answers[j]}")
-						- var checked = typeof question.correctAnswers[j] !== 'undefined' && question.correctAnswers[j] == true
-						if checked
-							input(type="checkbox", name="correct", value="#{qi}-#{j}", checked)
-						else
-							input(type="checkbox", name="correct", value="#{qi}-#{j}")
+			div(id="questionForm[#{qi}]", class="questionForm", style="display: table;")
+				div(style="display: table-row")
+					div(style="display: table-cell;")
+						| Question #{qi+1} description:
 						br
-					-}
-			br
+						textarea(name="questionName[#{qi}]", rows="5" cols="40") #{question.text}
+					div
+						| Answers (check if correct):
+						br
+						div(style="display: table-row")
+						-for(var j = 0; j < question.answers.length; ++j) {
+							div(class="answerDiv[#{qi}]")
+								input(type="text", name="answer[#{qi}][#{j}]", value="#{question.answers[j]}")
+								- var checked = typeof question.correctAnswers[j] !== 'undefined' && question.correctAnswers[j] == true
+								if checked
+									input(type="checkbox", name="correct", value="#{qi}-#{j}", checked)
+								else
+									input(type="checkbox", name="correct", value="#{qi}-#{j}")
+								br
+						-}
+						button(id="addAnswer[#{qi}]", class="addAnswerBtn", type="button") Add answer
+				br
 			
 		- for (var i = 0; i < extraQuestions; ++i) {
 			- var qi = existingQuestions.length + i
-			div(id="questionForm[#{qi}]", class="questionForm")
-				div(style="float:left")
-					| Question #{qi+1} description:
-					br
-					textarea(name="questionName[#{qi}]", rows="5" cols="40")
-				div
-					| Answers (check if correct):
-					br
-					- for(var j = 0; j < 3; ++j) {
-						input(type="text", name="answer[#{qi}][#{j}]")
-						input(type="checkbox", name="correct", value="#{qi}-#{j}")
+			div(id="questionForm[#{qi}]", class="questionForm", style="display: table")
+				div(style="display: table-row")
+					div(style="display: table-cell;")
+						| Question #{qi+1} description:
 						br
-					- }
+						textarea(name="questionName[#{qi}]", rows="5" cols="40")
+					div(style="display: table-cell;")
+						| Answers (check if correct):
+						br
+						- for(var j = 0; j < 3; ++j) {
+							div(class="answerDiv[#{qi}]")
+								input(type="text", name="answer[#{qi}][#{j}]")
+								input(type="checkbox", name="correct", value="#{qi}-#{j}")
+								br
+						- }
+						button(id="addAnswer[#{qi}]", class="addAnswerBtn", type="button") Add answer
 			br		
 		- }
 		
-		input(type="submit", value="submit")
+		// TODO button(id="addQuestion", type="button") Add another question
+		// br
+		// br
+		input(type="submit", value="Save and submit") 
+		
+block script
