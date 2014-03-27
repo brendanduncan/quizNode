@@ -10,14 +10,16 @@ block content
 		input(hidden type="text", name="quizId", value="#{quizId}")
 				
 		- each question, qi in existingQuestions
-			div(id="questionForm[#{qi}]", class="questionForm", style="display: table;")
+			div(class="questionForm", style="display: table;")
 				div(style="display: table-row")
 					div(style="display: table-cell;")
-						| Question #{qi+1} description:
+						div(class="questionHeader")
+							| Question #{qi+1} description:
 						br
 						textarea(name="questionName[#{qi}]", rows="5" cols="40") #{question.text}
 					div
-						| Answers (check if correct):
+						div
+							| Answers (check if correct):
 						br
 						div(style="display: table-row")
 						-for(var j = 0; j < question.answers.length; ++j) {
@@ -35,14 +37,16 @@ block content
 			
 		- for (var i = 0; i < extraQuestions; ++i) {
 			- var qi = existingQuestions.length + i
-			div(id="questionForm[#{qi}]", class="questionForm", style="display: table")
+			div(class="questionForm", style="display: table")
 				div(style="display: table-row")
 					div(style="display: table-cell;")
-						| Question #{qi+1} description:
+						div(class="questionHeader")
+							| Question #{qi+1} description:
 						br
 						textarea(name="questionName[#{qi}]", rows="5" cols="40")
 					div(style="display: table-cell;")
-						| Answers (check if correct):
+						div
+							| Answers (check if correct):
 						br
 						- for(var j = 0; j < 3; ++j) {
 							div(class="answerDiv[#{qi}]")
@@ -54,9 +58,9 @@ block content
 			br		
 		- }
 		
-		// TODO button(id="addQuestion", type="button") Add another question
-		// br
-		// br
+		button(id="addQuestion", type="button") Add another question
+		br
+		br
 		input(type="submit", value="Save and submit") 
 		
 block script
