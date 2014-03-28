@@ -1,6 +1,26 @@
 var Quiz = require('../models/quiz').Quiz;
 var Question = require('../models/quiz').Question;
 
+// constructs a dict from an array containing values
+// i-j, where i and j are integers. The returned dict
+// has the format dict[i][j] -> Boolean (always true)
+function constructDict(array) {
+	var dict = {};
+	for(var i in array) {
+		var qaArray = array[i].split("-");
+		if(qaArray.length != 2 || isNaN(qaArray[0]) || isNaN(qaArray[1])) {
+			continue;
+		}
+		var qnum = parseInt(qaArray[0]);
+		var anum = parseInt(qaArray[1]);
+		if(!(qnum in dict)) {
+			dict[qnum] = {};
+		}
+		dict[qnum][anum] = true;
+	}
+	return dict;
+}
+
 function reviewQuizController(app) {
 	// GETting
 	app.get('/reviewQuiz', function(req, res) {
@@ -36,25 +56,17 @@ function reviewQuizController(app) {
 			// save questions to quiz
 			var questions = [];
 			
-			// dict mapping question number -> (dict of answer number -> boolean)
-			// tells whether answer is correct for given question
+			// because checkboxes behave differently, body.correct (and body.deleted)
+			// contain strings "qi-ai", where qi = question index, ai = answer index
 			var correctAnswersDict = {};
-			
-			// because checkboxes behave differently, body.correct contains
-			// strings "qi-ai", where qi = question index, ai = answer index
 			if(req.body.correct !== 'undefined') {
-				for(var i in req.body.correct) {
-					var qaArray = req.body.correct[i].split("-");
-					if(qaArray.length != 2 || isNaN(qaArray[0]) || isNaN(qaArray[1])) {
-						continue;
-					}
-					var qnum = parseInt(qaArray[0]);
-					var anum = parseInt(qaArray[1]);
-					if(!(qnum in correctAnswersDict)) {
-						correctAnswersDict[qnum] = {};
-					}
-					correctAnswersDict[qnum][anum] = true;
-				}
+				correctAnswersDict = constructDict(req.body.correct);
+			}
+			
+			// dict to specify which of the answers have been deleted by the user
+			var deletedAnswersDict = {};
+			if(req.body.deleted !== 'undefined') {
+				deletedAnswersDict = constructDict(req.body.deleted);
 			}
 			
 			// create questions and add to quiz
@@ -64,6 +76,10 @@ function reviewQuizController(app) {
 				var correctCount = 0;
 				if(i in req.body.answer) {
 					for(var j in req.body.answer[i]) {
+						// ignored deleted answer
+						if(i in deletedAnswersDict && j in deletedAnswersDict[i] && deletedAnswersDict[i][j]) {
+							continue;
+						}
 						answers.push(req.body.answer[i][j]);
 						if(i in correctAnswersDict && j in correctAnswersDict[i] && correctAnswersDict[i][j]) {
 							correctAnswers.push(true);

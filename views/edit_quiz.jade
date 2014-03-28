@@ -30,6 +30,8 @@ block content
 									input(type="checkbox", name="correct", value="#{qi}-#{j}", checked)
 								else
 									input(type="checkbox", name="correct", value="#{qi}-#{j}")
+								input(type="checkbox", name="deleted", value="#{qi}-#{j}", hidden)
+								button(class="deleteAnswerBtn", type="button") delete
 								br
 						-}
 						button(id="addAnswer[#{qi}]", class="addAnswerBtn", type="button") Add answer
@@ -52,6 +54,8 @@ block content
 							div(class="answerDiv[#{qi}]")
 								input(type="text", name="answer[#{qi}][#{j}]")
 								input(type="checkbox", name="correct", value="#{qi}-#{j}")
+								input(type="checkbox", name="deleted", value="#{qi}-#{j}", hidden)
+								button(class="deleteAnswerBtn", type="button") delete
 								br
 						- }
 						button(id="addAnswer[#{qi}]", class="addAnswerBtn", type="button") Add answer
