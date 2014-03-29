@@ -14,7 +14,9 @@ block content
 				div(style="display: table-row")
 					div(style="display: table-cell;")
 						div(class="questionHeader")
-							| Question #{qi+1} description:
+							| Question description:
+							input(type="checkbox", name="deletedQuestion", value="#{qi}-", hidden)
+							button(class="deleteQuestionBtn", type="button") delete
 						br
 						textarea(name="questionName[#{qi}]", rows="5" cols="40") #{question.text}
 					div
@@ -22,15 +24,24 @@ block content
 							| Answers (check if correct):
 						br
 						div(style="display: table-row")
-						-for(var j = 0; j < question.answers.length; ++j) {
-							div(class="answerDiv[#{qi}]")
-								input(type="text", name="answer[#{qi}][#{j}]", value="#{question.answers[j]}")
+						-for(var j = 0; j < Math.max(question.answers.length,3); ++j) {
+							if j >= question.answers.length
+								-var cssHiddenString = "display: none;";
+								-var qValue = "";
+							else
+								-var cssHiddenString = "";
+								-var qValue = question.answers[j];
+							div(class="answerDiv[#{qi}]", style="#{cssHiddenString}")
+								input(type="text", name="answer[#{qi}][#{j}]", value="#{qValue}")
 								- var checked = typeof question.correctAnswers[j] !== 'undefined' && question.correctAnswers[j] == true
 								if checked
 									input(type="checkbox", name="correct", value="#{qi}-#{j}", checked)
 								else
 									input(type="checkbox", name="correct", value="#{qi}-#{j}")
-								input(type="checkbox", name="deleted", value="#{qi}-#{j}", hidden)
+								if j >= question.answers.length
+									input(type="checkbox", name="deleted", value="#{qi}-#{j}", hidden, checked)
+								else
+									input(type="checkbox", name="deleted", value="#{qi}-#{j}", hidden)
 								button(class="deleteAnswerBtn", type="button") delete
 								br
 						-}
@@ -43,7 +54,9 @@ block content
 				div(style="display: table-row")
 					div(style="display: table-cell;")
 						div(class="questionHeader")
-							| Question #{qi+1} description:
+							| Question description:
+							input(type="checkbox", name="deletedQuestion", value="#{qi}-", hidden)
+							button(class="deleteQuestionBtn", type="button") delete
 						br
 						textarea(name="questionName[#{qi}]", rows="5" cols="40")
 					div(style="display: table-cell;")
@@ -59,7 +72,7 @@ block content
 								br
 						- }
 						button(id="addAnswer[#{qi}]", class="addAnswerBtn", type="button") Add answer
-			br		
+			br 	
 		- }
 		
 		button(id="addQuestion", type="button") Add another question

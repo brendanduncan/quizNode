@@ -69,8 +69,21 @@ function reviewQuizController(app) {
 				deletedAnswersDict = constructDict(req.body.deleted);
 			}
 			
+			// dict to specify which questions are deleted
+			var deletedQuestionsDict = {};
+			if(req.body.deletedQuestion !== 'undefined') {
+				for(i in req.body.deletedQuestion) {
+					var qIndex = parseInt(req.body.deletedQuestion[i]);
+					deletedQuestionsDict[qIndex] = true;
+				}
+			}
+			
 			// create questions and add to quiz
 			for(var i in req.body.questionName) {
+				// ignore deleted question				
+				if(i in deletedQuestionsDict) {
+					continue;
+				}
 				var answers = [];
 				var correctAnswers = []
 				var correctCount = 0;
@@ -91,7 +104,7 @@ function reviewQuizController(app) {
 				}
 				var question = new Question({ 
 					text: req.body.questionName[i],
-					number: i,
+					number: questions.length,
 					answers: answers,
 					correctAnswers: correctAnswers,
 					
